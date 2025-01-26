@@ -168,11 +168,12 @@ def show_stove_information(data) :
     print(Fore.WHITE + "               Diag Motor             : " + Fore.YELLOW + "{} %".format(data['sensors']['outputDischargeMotor']))
     print(Fore.WHITE + "               Fan velocity           : " + Fore.YELLOW + "{} rps".format(data['sensors']['outputIDFan']))
 
-    json_data = {"SENSOR":{"check_time": current_time, "stove_status": jstove, "room_temp": int(data["sensors"]["inputRoomTemperature"]), "flame_temp": data["sensors"]["inputFlameTemperature"], "pellets_used": data["sensors"]["parameterFeedRateTotal"], "pellets_time": data["sensors"]["parameterRuntimePellets"], "diag_motor": data["sensors"]["outputDischargeMotor"],"fan_velocity": data["sensors"]["outputIDFan"]}, "STATE":{"stove_status": jstovectl, "revision_date": time.strftime("%d/%m/%Y"), "revision_time": time.strftime("%H:%M"), "operating_mode": jstovemode, "target_temp": int(data["controls"]["targetTemperature"]), "protection_temp": data["controls"]["setBackTemperature"]}}
+    json_data = {"SENSOR":{"check_time": current_time, "stove_status": jstove, "room_temp": float(data["sensors"]["inputRoomTemperature"]), "flame_temp": data["sensors"]["inputFlameTemperature"], "pellets_used": data["sensors"]["parameterFeedRateTotal"], "pellets_time": data["sensors"]["parameterRuntimePellets"], "diag_motor": data["sensors"]["outputDischargeMotor"],"fan_velocity": data["sensors"]["outputIDFan"]}, "STATE":{"stove_status": jstovectl, "revision_date": time.strftime("%d/%m/%Y"), "revision_time": time.strftime("%H:%M"), "operating_mode": jstovemode, "target_temp": int(data["controls"]["targetTemperature"]), "protection_temp": data["controls"]["setBackTemperature"]}}
     #print(json.dumps(json_data, sort_keys=True, indent=2))
-    with open(json_path, 'w') as text_file:
-        #print(json_data, file=text_file)
-        print(json.dumps(json_data, sort_keys=True), file=text_file)
+    if json_path != '':
+        with open(json_path, 'w') as text_file:
+            #print(json_data, file=text_file)
+            print(json.dumps(json_data, sort_keys=True), file=text_file)
     return json_data
 
 def get_stove_consumption(data) :
